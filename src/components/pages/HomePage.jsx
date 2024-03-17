@@ -1,10 +1,13 @@
 import React from "react";
 import Navbar from "../layout/Navbar.jsx";
+import Background from "../layout/Background.jsx";
 
 import side_image from "/side_image.png";
 
 const HomePage = () => {
   return (
+    <div>
+      <Background />
     <div className="flex flex-col h-screen">
       <Navbar />
       <div className="flex flex-row w-full h-full">
@@ -41,9 +44,10 @@ const HomePage = () => {
           </div>
         </div>
         <div className="w-[40%] h-full p-10">
-          <img src={side_image} className="justify-center items-center" alt="Side Image" />
+          <img src={side_image} className="lg:h-[80%] sm:h-auto justify-center items-center pr-4" alt="Side Image" />
         </div>
       </div>
+    </div>
     </div>
   );
 };
