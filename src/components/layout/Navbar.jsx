@@ -13,7 +13,7 @@ const Navbar = () => {
             </Link>
             <div className="w-full flex justify-center gap-20">
                 <NavLink to="/" isActive={location.pathname === '/'}>Home</NavLink>
-                <NavLink to="/dashboard" isActive={location.pathname === '/dashboard'}>My Files</NavLink>
+                <NavLink to="/dashboard" isActive={location.pathname === '/dashboard'}>Dashboard</NavLink>
                 <NavLink to="/about" isActive={location.pathname === '/about'}>About Us</NavLink>
             </div>
             <div className="flex gap-4 pr-5">
