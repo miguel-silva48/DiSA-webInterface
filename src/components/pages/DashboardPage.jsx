@@ -1,5 +1,6 @@
 import React from "react";
 import Navbar from "../layout/Navbar.jsx";
+import Footer from "../layout/Footer.jsx";
 import Background from "../layout/Background.jsx";
 import DocumentSetCard from "../layout/DocumentSetCard.jsx";
 
@@ -21,6 +22,7 @@ const DashboardPage = () => {
           <DocumentSetCard />
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

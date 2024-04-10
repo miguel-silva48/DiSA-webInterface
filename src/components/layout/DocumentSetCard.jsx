@@ -24,7 +24,7 @@ const DocumentSetCard = () => {
 
   return (
     <div className="flex justify-center p-4">
-      <div className="w-2/3 border-4 border-gray-600 rounded-lg bg-gray-200 p-4">
+      <div className="w-2/3 border-2 border-gray-600 rounded-lg bg-white p-4">
         <div className="flex items-center justify-between mb-4 text-2xl font-bold text-gray-600">
           <h2>{cardName}</h2>
           <button onClick={() => navigate('/files')}>
