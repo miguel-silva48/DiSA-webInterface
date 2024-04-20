@@ -56,7 +56,7 @@ const LoginPage = () => {
         console.log("LOGIN RESPONSE:", data);
         if (response.ok) {
             sessionStorage.setItem('username', formData.username);
-            sessionStorage.setItem('token', data.token);
+            sessionStorage.setItem('access_token', data.access_token);
           alert("User logged in successfully!");
           navigate("/dashboard");
         }

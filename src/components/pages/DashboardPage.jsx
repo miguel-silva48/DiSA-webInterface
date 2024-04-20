@@ -1,10 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "../layout/Navbar.jsx";
 import Footer from "../layout/Footer.jsx";
 import Background from "../layout/Background.jsx";
 import DocumentSetCard from "../layout/DocumentSetCard.jsx";
 
 const DashboardPage = () => {
+
+// Redirect to login page if user is not logged in and tries to access this
+useEffect(() => {
+  if (sessionStorage.getItem("access_token") === null) {
+    window.location.href = "/login";
+  }
+}
+, []);
+
+
   return (
     <div>
       <Background />
