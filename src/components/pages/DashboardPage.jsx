@@ -45,7 +45,6 @@ const DashboardPage = () => {
   // Make token available to copy so that user can login the CLI
   const handleLinkCopy = () => {
     navigator.clipboard.writeText(user_token).then(() => {
-      setCopySuccess(true);
       alert("User token copied to clipboard!");
     }).catch((error) => {
       alert("Error copying user token to clipboard!");
