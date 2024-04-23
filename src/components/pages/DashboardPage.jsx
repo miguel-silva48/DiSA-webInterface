@@ -1,32 +1,56 @@
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { API_BASE_URL } from "../../constants/index.jsx";
 import Navbar from "../layout/Navbar.jsx";
 import Footer from "../layout/Footer.jsx";
 import Background from "../layout/Background.jsx";
 import DocumentSetCard from "../layout/DocumentSetCard.jsx";
 
 const DashboardPage = () => {
-    const user_token = sessionStorage.getItem("access_token") || "";
+  const user_token = sessionStorage.getItem("access_token") || "";
+  const [collections, setCollections] = useState([]);
 
+  useEffect(() => {
     // Redirect to login page if user is not logged in and tries to access this
-    useEffect(() => {
-        if (sessionStorage.getItem("access_token") === null) {
-            alert("You must be logged in to access this!");
-            window.location.href = "/login";
-        }
+    if (sessionStorage.getItem("access_token") === null) {
+      alert("You must be logged in to access this!");
+      window.location.href = "/login";
     }
-        , []);
 
-    //TODO - fetch user's documents and display them
-
-    // Make token available to copy so that user can login the CLI
-    const handleLinkCopy = () => {
-        navigator.clipboard.writeText(user_token).then(() => {
-            alert("User token copied to clipboard!");
-        }).catch((error) => {
-            alert("Error copying user token to clipboard!");
-            console.error('ERROR copying link:', error);
+    // Fetch user's collections and display them
+    const fetchUserCollections = async () => {
+      try {
+        const response = await fetch(API_BASE_URL + "/collections/user", {
+          method: "GET",
+          headers: {
+            "Authorization": `Bearer ${user_token}`
+          }
         });
+
+        if (!response.ok) {
+          alert("Error fetching user collections!");
+          return;
+        }
+
+        const data = await response.json();
+        setCollections(data);
+        console.log(data);
+      } catch (error) {
+        console.error("Error fetching user collections:", error);
+      }
     };
+
+    fetchUserCollections();
+  }, []);
+
+  // Make token available to copy so that user can login the CLI
+  const handleLinkCopy = () => {
+    navigator.clipboard.writeText(user_token).then(() => {
+      alert("User token copied to clipboard!");
+    }).catch((error) => {
+      alert("Error copying user token to clipboard!");
+      console.error('ERROR copying link:', error);
+    });
+  };
 
     return (
         <div className="flex flex-col h-screen">
@@ -49,12 +73,14 @@ const DashboardPage = () => {
                         and paste it in the CLI tool.
                     </p>
 
-                    <DocumentSetCard />
-                    <DocumentSetCard />
-                    <DocumentSetCard />
-                </div>
-            </div>
-            <Footer />
+          {collections.length > 0 ? (
+            collections.map((collection) => (
+              <DocumentSetCard key={collection.id} collection={collection} />
+            ))
+          ) : (
+            <p className="mt-10 text-4xl">You don't have any collections yet. Try using our CLI tool to submit files!</p>
+          )}
+
         </div>
     );
 };
