@@ -87,22 +87,22 @@ const RegisterPage = () => {
             <form className="w-full max-w-lg mx-auto border  bg-white rounded-lg p-8 shadow-md">
               <div className="mb-6">
                 <label htmlFor="name" className="block text-gray-600 font-bold mb-2">Name</label>
-                <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 leading-tight focus:outline-none focus:shadow-outline" placeholder="Insert your full name here"/>
+                <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 leading-tight focus:outline-none focus:shadow-outline" placeholder="Insert your full name here" />
                 {formErrors.name && <p className="text-red-500">{formErrors.name}</p>}
               </div>
               <div className="mb-6">
                 <label htmlFor="email" className="block text-gray-600 font-bold mb-2">Email</label>
-                <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 leading-tight focus:outline-none focus:shadow-outline" placeholder="Insert your email here"/>
+                <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 leading-tight focus:outline-none focus:shadow-outline" placeholder="Insert your email here" />
                 {formErrors.email && <p className="text-red-500">{formErrors.email}</p>}
               </div>
               <div className="mb-6">
                 <label htmlFor="password" className="block text-gray-600 font-bold mb-2">Password</label>
-                <input type="password" id="password" name="password" value={formData.password} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 leading-tight focus:outline-none focus:shadow-outline" placeholder="Insert your password here"/>
+                <input type="password" id="password" name="password" value={formData.password} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 leading-tight focus:outline-none focus:shadow-outline" placeholder="Insert your password here" />
                 {formErrors.password && <p className="text-red-500">{formErrors.password}</p>}
               </div>
               <div className="mb-6">
                 <label htmlFor="nic" className="block text-gray-600 font-bold mb-2">Civil Number</label>
-                <input type="text" id="nic" name="nic" value={formData.nic} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 leading-tight focus:outline-none focus:shadow-outline" placeholder="Insert your civil number here [temporary]"/>
+                <input type="text" id="nic" name="nic" value={formData.nic} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 leading-tight focus:outline-none focus:shadow-outline" placeholder="Insert your civil number here [temporary]" />
                 {formErrors.nic && <p className="text-red-500">{formErrors.nic}</p>}
               </div>
               <div className="mb-6">

@@ -59,7 +59,7 @@ const CollectionPage = () => {
   const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
     return new Date(dateString).toLocaleDateString('en-UK', options);
-   };
+  };
 
   const handleLinkCopy = () => {
     navigator.clipboard.writeText(link).then(() => {
@@ -76,7 +76,7 @@ const CollectionPage = () => {
       <div className="flex flex-col h-screen">
         <Navbar />
         <div className="p-10">
-        <h1 className="font-sans text-6xl font-extrabold bg-gradient-to-b from-[#6941C6] to-[#27164F] bg-clip-text text-transparent mb-4">
+          <h1 className="font-sans text-6xl font-extrabold bg-gradient-to-b from-[#6941C6] to-[#27164F] bg-clip-text text-transparent mb-4">
             Collection Information
           </h1>
           <div className="ml-8 grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
@@ -127,11 +127,11 @@ const CollectionPage = () => {
           {collectionHistory.documents && <DocumentSetContent documents={collectionHistory.documents} />}
         </div>
         <button
-        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-        className="fixed bottom-4 right-4 bg-purple-600 text-white p-2 rounded-full"
-      >
-        ↑ Back to top
-      </button>
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          className="fixed bottom-4 right-4 bg-purple-600 text-white p-2 rounded-full"
+        >
+          ↑ Back to top
+        </button>
       </div>
     </div>
   );

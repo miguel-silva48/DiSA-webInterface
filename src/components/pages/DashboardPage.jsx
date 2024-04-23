@@ -52,26 +52,26 @@ const DashboardPage = () => {
     });
   };
 
-    return (
-        <div className="flex flex-col h-screen">
-            <Background />
-            <div className="flex flex-col flex-grow">
-                <Navbar />
-                <div className="text-center p-10">
-                    <h1 className="font-sans text-6xl font-extrabold bg-gradient-to-b from-[#6941C6] to-[#27164F] bg-clip-text text-transparent">
-                        Welcome to your DiSA dashboard!
-                    </h1>
-                    <h2 className="text-3xl text-gray-600 mt-2 mb-4">
-                        Here you can check your submitted files, manage their accesses and much more!
-                    </h2>
-                    <p className="text-2xl text-gray-600">
-                        To use the CLI tool,
-                        <span
-                            className="text-purple-500 underline cursor-pointer ml-2 mr-2"
-                            onClick={handleLinkCopy}
-                        >copy your token</span>
-                        and paste it in the CLI tool.
-                    </p>
+  return (
+    <div className="flex flex-col h-screen">
+      <Background />
+      <div className="flex flex-col flex-grow">
+        <Navbar />
+        <div className="text-center p-10">
+          <h1 className="font-sans text-6xl font-extrabold bg-gradient-to-b from-[#6941C6] to-[#27164F] bg-clip-text text-transparent">
+            Welcome to your DiSA dashboard!
+          </h1>
+          <h2 className="text-3xl text-gray-600 mt-2 mb-4">
+            Here you can check your submitted files, manage their accesses and much more!
+          </h2>
+          <p className="text-2xl text-gray-600">
+            To use the CLI tool,
+            <span
+              className="text-purple-500 underline cursor-pointer ml-2 mr-2"
+              onClick={handleLinkCopy}
+            >copy your token</span>
+            and paste it in the CLI tool.
+          </p>
 
           {collections.length > 0 ? (
             collections.map((collection) => (
@@ -82,7 +82,10 @@ const DashboardPage = () => {
           )}
 
         </div>
-    );
+      </div>
+      <Footer />
+    </div>
+  );
 };
 
 export default DashboardPage;

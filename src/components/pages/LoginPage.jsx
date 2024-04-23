@@ -55,8 +55,8 @@ const LoginPage = () => {
         const data = await response.json();
         console.log("LOGIN RESPONSE:", data);
         if (response.ok) {
-            sessionStorage.setItem('username', formData.username);
-            sessionStorage.setItem('access_token', data.access_token);
+          sessionStorage.setItem('username', formData.username);
+          sessionStorage.setItem('access_token', data.access_token);
           alert("User logged in successfully!");
           navigate("/dashboard");
         }
@@ -82,12 +82,12 @@ const LoginPage = () => {
             <form className="w-full max-w-lg mx-auto border  bg-white rounded-lg p-8 shadow-md">
               <div className="mb-6">
                 <label htmlFor="username" className="block text-gray-600 font-bold mb-2">Username</label>
-                <input type="text" id="username" name="username" value={formData.username} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 leading-tight focus:outline-none focus:shadow-outline" placeholder="Insert your username here"/>
+                <input type="text" id="username" name="username" value={formData.username} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 leading-tight focus:outline-none focus:shadow-outline" placeholder="Insert your username here" />
                 {formErrors.username && <p className="text-red-500">{formErrors.username}</p>}
               </div>
               <div className="mb-6">
                 <label htmlFor="password" className="block text-gray-600 font-bold mb-2">Password</label>
-                <input type="password" id="password" name="password" value={formData.password} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 leading-tight focus:outline-none focus:shadow-outline" placeholder="Insert your password here"/>
+                <input type="password" id="password" name="password" value={formData.password} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 leading-tight focus:outline-none focus:shadow-outline" placeholder="Insert your password here" />
                 {formErrors.password && <p className="text-red-500">{formErrors.password}</p>}
               </div>
               <div className="flex items-center justify-between">

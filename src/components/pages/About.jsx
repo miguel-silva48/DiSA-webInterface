@@ -19,7 +19,7 @@ const AboutPage = () => {
             </p>
             <h2 className="font-sans text-4xl font-bold mb-6">Frequently Asked Questions</h2>
             <div className="text-lg text-gray-600">
-                <h3 className="font-bold text-gray-800 mb-2">What led us to create this platform?</h3>
+              <h3 className="font-bold text-gray-800 mb-2">What led us to create this platform?</h3>
               <p className="mb-4">
                 The growing need for secure and reliable digital archiving solutions inspired the creation of DiSA. We aim to provide organizations and individuals a way to preserve important documents with full confidence in their integrity and authenticity.
               </p>
@@ -35,7 +35,7 @@ const AboutPage = () => {
               <p className="mb-4">
                 To submit files for archiving, simply register or log into your account on our platform, and follow the prompts to upload your documents securely. Each file will be encrypted and stored with a unique digital signature and a personal link.
               </p>
-              
+
             </div>
           </div>
         </div>
