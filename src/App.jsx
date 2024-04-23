@@ -7,6 +7,7 @@ import CollectionPage from "./components/pages/CollectionPage";
 import AboutPage from "./components/pages/About";
 
 const App = () => {
+    // TODO: add a 404 page
   return (
     <BrowserRouter>
       <Routes>
@@ -16,7 +17,6 @@ const App = () => {
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/dashboard/collection" element={<CollectionPage />} />
         <Route path="/about" element={<AboutPage />} />
-
       </Routes>
     </BrowserRouter>
   );
