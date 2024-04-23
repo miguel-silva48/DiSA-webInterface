@@ -31,14 +31,14 @@ const LoginPage = () => {
     if (!formData.password) {
       newErrors.password = "Password field is required!";
     }
-  
+
     // No errors, send the POST request
     if (Object.keys(newErrors).length === 0) {
       try {
         const params = new URLSearchParams();
         params.append('username', formData.username);
         params.append('password', formData.password);
-  
+
         const response = await fetch(API_BASE_URL + "/users/login", {
           method: "POST",
           headers: {
@@ -46,12 +46,12 @@ const LoginPage = () => {
           },
           body: params.toString(),
         });
-  
+
         if (!response.ok) {
           alert("Invalid credentials!");
           return;
         }
-  
+
         const data = await response.json();
         console.log("LOGIN RESPONSE:", data);
         if (response.ok) {
@@ -67,16 +67,16 @@ const LoginPage = () => {
       setFormErrors(newErrors);
     }
   };
-  
+
 
   return (
-    <div>
+    <div className="flex flex-col h-screen">
       <Background />
-      <div className="flex flex-col h-screen">
+      <div className="flex flex-col flex-grow">
         <Navbar />
         <div className="flex justify-center h-full p-20">
           <div className="w-[60%]">
-            <h1 className="font-sans text-6xl font-extrabold bg-gradient-to-b from-[#6941C6] to-[#27164F] bg-clip-text text-transparent text-center mb-8">
+            <h1 className="font-sans text-6xl font-extrabold bg-gradient-to-b from-[#6941C6] to-[#27164F] bg-clip-text text-transparent text-center mb-8 p-2">
               Log in to your DiSA account
             </h1>
             <form className="w-full max-w-lg mx-auto border  bg-white rounded-lg p-8 shadow-md">
