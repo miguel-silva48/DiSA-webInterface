@@ -39,7 +39,7 @@ const LoginPage = () => {
         params.append('username', formData.username);
         params.append('password', formData.password);
 
-        const response = await fetch(API_BASE_URL + "/users/login", {
+        const response = await fetch(API_BASE_URL + "/users/users/login", {
           method: "POST",
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
