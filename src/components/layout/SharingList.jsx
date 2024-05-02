@@ -7,22 +7,28 @@ const SharingList = ({ collection, onClose }) => {
   const [sharedEmails, setSharedEmails] = React.useState(["example@example.pt", "example2@example.pt"]);
   const [newEmail, setNewEmail] = React.useState("");
   const [copySuccess, setCopySuccess] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState("");
 
   const addEmail = () => {
     // If email is empty, do nothing
-    if (newEmail.trim() === "") return;
+    if (newEmail.trim() === "") {
+      setErrorMessage("Email cannot be empty, please enter a valid email and try again.");
+      return;
+    }
 
     // If it is not an email, alert with error
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(newEmail.trim())) {
-      alert("Invalid email, please enter a valid email and try again.");
+      //alert("Invalid email, please enter a valid email and try again.");
+      setErrorMessage("Invalid email, please enter a valid email and try again.");
       setNewEmail("");
       return;
     }
 
     // If email is in the list, alert with error
     if (sharedEmails.includes(newEmail.trim())) {
-      alert("Email already in the list.");
+      //alert("Email already in the list.");
+      setErrorMessage("Email is already in the list, please try a different one.");
       setNewEmail("");
       return;
     }
@@ -30,6 +36,7 @@ const SharingList = ({ collection, onClose }) => {
     // Add email to the list
     //TODO make api call adding this
     setSharedEmails(prevEmails => [...prevEmails, newEmail.trim()]);
+    setErrorMessage("");
     setNewEmail("");
   };
 
@@ -84,6 +91,7 @@ const SharingList = ({ collection, onClose }) => {
           <p>You haven't shared this collection with anyone yet!</p>
         )}
         <hr className="border-t border-purple-600 mt-2 mb-8" />
+        
         <div className="flex mt-4 justify-center">
           <input
             type="email"
@@ -96,8 +104,12 @@ const SharingList = ({ collection, onClose }) => {
             <RiAddCircleFill className="text-xl mr-2" />
             Add Email
           </button>
+          
         </div>
+        <div className="flex flex-col justify-center mt-4">
+          {errorMessage && <span className="text-red-600 ml-2">{errorMessage}</span>}
         <button className="bg-gray-500 text-white px-4 py-2 rounded-lg mt-4 ml-2" onClick={onClose}>Close</button>
+        </div>
       </div>
     </div>
   );
