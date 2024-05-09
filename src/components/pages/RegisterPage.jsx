@@ -44,7 +44,7 @@ const RegisterPage = () => {
     //No errors, send the POST request
     if (Object.keys(newErrors).length === 0) {
       try {
-        const response = await fetch(API_BASE_URL + "/users/users", {
+        const response = await fetch(API_BASE_URL + "/users/", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
