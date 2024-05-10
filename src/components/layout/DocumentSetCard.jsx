@@ -3,16 +3,71 @@ import { API_BASE_URL } from "../../constants/index.jsx";
 import { useNavigate } from 'react-router-dom';
 import SharingList from '../layout/SharingList.jsx';
 
-import { RiSettingsFill, RiShareFill } from 'react-icons/ri';
+import { RiPencilFill, RiSettingsFill, RiShareFill, RiCheckboxCircleFill } from 'react-icons/ri';
 
-const DocumentSetCard = ({collection}) => {
+const DocumentSetCard = ({ token, collection }) => {
   const navigate = useNavigate();
   const [showSharingModal, setShowSharingModal] = useState(false);
 
-  const cardName = collection.name? collection.name : 'Untitled';
-  const sharingState = collection.share_state? collection.share_state : 'Unknown';
-  const date = collection.date? collection.date : 'Unknown';
-  const link = collection.id? 'https://localhost:3000/shared?col_uuid=' + collection.id : null;
+  const [cardName, setName] = useState(collection.name || 'Untitled');
+  const [editingName, setEditingName] = useState(false);
+  const [nameError, setNameError] = useState(null);
+
+  const createdDate = collection.created ? collection.created : 'Unknown';
+  const link = collection.id ? 'https://localhost:3000/shared?col_uuid=' + collection.id : null;
+
+  // Format date to be more readable
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+    return new Date(dateString).toLocaleDateString('en-UK', options);
+  };
+
+  const handleNameSubmit = async () => {
+    // Check no changes were made
+    if (cardName === collection.name) {
+      setEditingName(false);
+      setNameError(null);
+      return;
+    }
+
+    // Check valid name
+    if (!cardName || cardName.length < 3 || cardName.length > 50) {
+      setNameError('Try inserting a name with 3 to 50 characters.');
+      setEditingName(false);
+      setName(collection.name);
+      return;
+    }
+
+    try {
+      const response = await fetch(API_BASE_URL + "/collections?col_uuid=" + collection.id + "&name=" + cardName, {
+        method: "PUT",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Error updating collection name:", errorData.message);
+        setNameError('Error updating collection name.');
+        setEditingName(false);
+        setName(collection.name);
+        return;
+      }
+
+      const data = await response.json();
+      console.log(data);
+      setNameError(null);
+      setEditingName(false);
+      setName(cardName);
+    } catch (error) {
+      console.error("Error updating collection name:", error.message);
+      setNameError('Error updating collection name.');
+      setEditingName(false);
+      setName(collection.name);
+    }
+  };
 
   const handleManageCollection = () => {
     navigate('/dashboard/collection', { state: { collection: collection } });
@@ -26,7 +81,31 @@ const DocumentSetCard = ({collection}) => {
     <div className="flex justify-center text-gray-600 p-4">
       <div className="w-2/3 border-2 border-gray-600 rounded-lg bg-white p-4">
         <div className="flex items-center justify-between mb-4 text-2xl font-bold">
-          <h2>{cardName}</h2>
+          <div className="flex gap-2">
+          <h2 className="text-gray-600 font-bold mb-2">
+            {editingName ? (
+              <form onSubmit={handleNameSubmit} className="flex items-center">
+                <input
+                  type="text"
+                  value={cardName}
+                  onChange={(e) => setName(e.target.value)}
+                  className="text-xl font-bold text-gray-600 rounded-lg border border-purple-600 px-3 py-2 mr-2"
+                />
+                <button type="submit" className="text-purple-600">
+                  <RiCheckboxCircleFill />
+                </button>
+              </form>
+            ) : (
+              <>
+                Collection name: {cardName}
+                <button onClick={() => setEditingName(true)} className="text-purple-600 ml-2">
+                  <RiPencilFill />
+                </button>
+              </>
+            )}
+          </h2>
+          {nameError && <p className="text-base text-red-600">{nameError}</p>}
+          </div>
           <button onClick={handleManageCollection}>
             <div className="flex gap-2 border-2 border-black rounded-lg ">
               <p className="text-xl font-bold">Manage collection</p>
@@ -37,22 +116,11 @@ const DocumentSetCard = ({collection}) => {
         <hr className="border-t border-purple-500 mb-4" />
 
         <div className="flex gap-20 justify-between">
-          <p className="text-xl">Submission Date: {date}</p>
-          <p className="text-xl">
-            Share State:
-            <span className={
-              sharingState === 'public' ? 'text-green-600' :
-                sharingState === 'private' ? 'text-red-600' :
-                  sharingState === 'embargoed' ? 'text-yellow-600' :
-                    sharingState === 'restricted' ? 'text-orange-600' :
-                      'text-gray-600'
-            }> {sharingState}
-            </span>
-          </p>
+          <p className="text-xl">Submission Date: {formatDate(createdDate)}</p>
           <button onClick={handleShareCollection}>
             <div className="flex gap-2 border-2 border-black rounded-lg ">
               <p className="text-xl font-bold">Share collection</p>
-              <RiShareFill className='text-2xl'/></div>
+              <RiShareFill className='text-2xl' /></div>
           </button>
         </div>
         {showSharingModal && <SharingList collection={collection} onClose={() => setShowSharingModal(false)} />}
