@@ -22,7 +22,8 @@ const DocumentSetCard = ({ token, collection }) => {
     return new Date(dateString).toLocaleDateString('en-UK', options);
   };
 
-  const handleNameSubmit = async () => {
+  const handleNameSubmit = async (e) => {
+    e.preventDefault();
     // Check no changes were made
     if (cardName === collection.name) {
       setEditingName(false);
@@ -31,8 +32,8 @@ const DocumentSetCard = ({ token, collection }) => {
     }
 
     // Check valid name
-    if (!cardName || cardName.length < 3 || cardName.length > 50) {
-      setNameError('Try inserting a name with 3 to 50 characters.');
+    if (!cardName || cardName.length < 4 || cardName.length > 50) {
+      setNameError('Try inserting a name with 4 to 50 characters.');
       setEditingName(false);
       setName(collection.name);
       return;
