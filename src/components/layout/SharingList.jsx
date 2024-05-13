@@ -1,24 +1,51 @@
-import React from 'react';
-
+import React, { useEffect } from 'react';
+import { API_BASE_URL } from "../../constants/index.jsx";
 import { RiClipboardFill, RiDeleteBinFill, RiAddCircleFill } from 'react-icons/ri';
 
 const SharingList = ({ collection, onClose }) => {
   const link = `https://localhost:3000/shared?col_uuid=${collection.id}`;
-  const [sharedEmails, setSharedEmails] = React.useState(["example@example.pt", "example2@example.pt"]);
+  const token = sessionStorage.getItem('access_token');
+  const [sharedEmails, setSharedEmails] = React.useState([]);
   const [newEmail, setNewEmail] = React.useState("");
   const [copySuccess, setCopySuccess] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState("");
 
-  const addEmail = () => {
+  useEffect(() => {
+    //TODO make api call to get shared emails
+    const fetchPermissions = async () => {
+      try {
+        const response = await fetch(API_BASE_URL + "/collections/permissions?col_uuid=" + collection.id, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (!response.ok) {
+          throw new Error('Failed to fetch permissions');
+        }
+        const data = await response.json();
+        console.log('Permissions:', data);
+        setSharedEmails(data);
+      } catch (error) {
+        console.error('Error fetching permissions:', error);
+        setErrorMessage('Failed to fetch permissions');
+      }
+    };
+
+    fetchPermissions();
+  }, [collection.id, token, sharedEmails]);
+
+  const addEmail = async () => {
+    const trimedEmail = newEmail.trim();
     // If email is empty, do nothing
-    if (newEmail.trim() === "") {
+    if (trimedEmail === "") {
       setErrorMessage("Email cannot be empty, please enter a valid email and try again.");
       return;
     }
 
     // If it is not an email, alert with error
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(newEmail.trim())) {
+    if (!emailRegex.test(trimedEmail)) {
       //alert("Invalid email, please enter a valid email and try again.");
       setErrorMessage("Invalid email, please enter a valid email and try again.");
       setNewEmail("");
@@ -26,7 +53,7 @@ const SharingList = ({ collection, onClose }) => {
     }
 
     // If email is in the list, alert with error
-    if (sharedEmails.includes(newEmail.trim())) {
+    if (sharedEmails.includes(trimedEmail)) {
       //alert("Email already in the list.");
       setErrorMessage("Email is already in the list, please try a different one.");
       setNewEmail("");
@@ -34,10 +61,27 @@ const SharingList = ({ collection, onClose }) => {
     }
 
     // Add email to the list
-    //TODO make api call adding this
-    setSharedEmails(prevEmails => [...prevEmails, newEmail.trim()]);
-    setErrorMessage("");
-    setNewEmail("");
+    try {
+      const response = await fetch(API_BASE_URL + "/collections/permissions?col_uuid=" + collection.id +"&permission=read" + "&email=" + trimedEmail, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Failed to add permission');
+      }
+      const data = await response.json();
+      console.log('Permission added:', data);
+
+      setSharedEmails(prevEmails => [...prevEmails, trimedEmail]);
+      setErrorMessage("");
+      setNewEmail("");
+    } catch (error) {
+      console.error('Error adding email:', error);
+      setErrorMessage('Failed to add email');
+    }
   };
 
   const removeEmail = (index) => {
@@ -62,7 +106,7 @@ const SharingList = ({ collection, onClose }) => {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
-        <h2 className="text-2xl font-bold mb-8">Collection: {collection.name}</h2>
+        <h2 className="text-2xl font-bold mb-8">Collection name: {collection.name}</h2>
         <div className="flex justify-between items-center mb-8 gap-40">
           <h3 className="text-xl">Shared with:</h3>
           <button
@@ -77,9 +121,11 @@ const SharingList = ({ collection, onClose }) => {
         <hr className="border-t border-purple-600 mt-2 mb-2" />
         {sharedEmails.length > 0 ? (
           <ul>
-            {sharedEmails.map((email, index) => (
+            {sharedEmails
+            .sort((a, b) => a.email > b.email ? 1 : -1)
+            .map((permission, index) => (
               <li key={index} className="flex items-center justify-between py-2 ml-4">
-                <span>{email}</span>
+                <span>{permission.email}</span>
                 <button onClick={() => removeEmail(index)} className="flex items-center rounded-lg text-white bg-red-600 hover:bg-red-400 px-3 py-1">
                   <RiDeleteBinFill className="text-xl mr-2" />
                   Remove
