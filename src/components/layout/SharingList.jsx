@@ -1,16 +1,17 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { API_BASE_URL } from "../../constants/index.jsx";
 import { RiClipboardFill, RiDeleteBinFill, RiAddCircleFill } from 'react-icons/ri';
 
 const SharingList = ({ collection, onClose }) => {
   const link = `https://localhost:3000/shared?col_uuid=${collection.id}`;
   const token = sessionStorage.getItem('access_token');
-  const [sharedEmails, setSharedEmails] = React.useState([]);
-  const [newEmail, setNewEmail] = React.useState("");
-  const [copySuccess, setCopySuccess] = React.useState(false);
-  const [errorMessage, setErrorMessage] = React.useState("");
+  const [sharedEmails, setSharedEmails] = useState([]);
+  const [newEmail, setNewEmail] = useState("");
+  const [copySuccess, setCopySuccess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
+    // Get a list of emails that have access to the collection (white-list)
     const fetchPermissions = async () => {
       try {
         const response = await fetch(API_BASE_URL + "/collections/permissions?col_uuid=" + collection.id, {
@@ -34,6 +35,7 @@ const SharingList = ({ collection, onClose }) => {
     fetchPermissions();
   }, [collection.id, token, sharedEmails.length]);
 
+  // Function to add email to the white-list
   const addEmail = async () => {
     const trimedEmail = newEmail.trim();
     // If email is empty, do nothing
@@ -61,7 +63,7 @@ const SharingList = ({ collection, onClose }) => {
 
     // Add email to the list
     try {
-      const response = await fetch(API_BASE_URL + "/collections/permissions?col_uuid=" + collection.id +"&permission=read" + "&email=" + trimedEmail, {
+      const response = await fetch(API_BASE_URL + "/collections/permissions?col_uuid=" + collection.id + "&permission=read" + "&email=" + trimedEmail, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -83,31 +85,31 @@ const SharingList = ({ collection, onClose }) => {
     }
   };
 
-  const removeEmail = (index) => {
-    //TODO test this function
-    const emailToRemove = sharedEmails[index].email;
-
-    const removePermission = async () => {
-      try {
-        const response = await fetch(API_BASE_URL + "/collections/permissions?col_uuid=" + collection.id + "&email=" + emailToRemove, {
-          method: 'DELETE',
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        if (!response.ok) {
-          throw new Error('Failed to remove permission');
-        }
-        const data = await response.json();
-        console.log('Permission removed:', data);
-        setSharedEmails(prevEmails => prevEmails.filter((email, i) => i !== index));
-      } catch (error) {
-        console.error('Error removing email:', error);
-        setErrorMessage('Failed to remove email');
+  // Function to remove email from the white-list
+  const removeEmail = async (emailToRemove) => {
+    console.log('Removing email:', emailToRemove);
+    try {
+      const response = await fetch(API_BASE_URL + "/collections/permissions?col_uuid=" + collection.id + "&permission=read" + "&email=" + emailToRemove, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Failed to remove permission');
       }
-    };
+      const data = await response.json();
+      console.log('Permission removed:', data);
+      //setSharedEmails(prevEmails => prevEmails.filter(email => email !== emailToRemove));
+      setSharedEmails(prevEmails => prevEmails.filter(email => email.email !== emailToRemove));
+      setErrorMessage("");
+    } catch (error) {
+      console.error('Error removing email:', error);
+      setErrorMessage('Failed to remove email');
+    }
   };
 
+  // Function to copy the share link to the clipboard
   const handleLinkCopy = () => {
     navigator.clipboard.writeText(link).then(() => {
       setCopySuccess(true);
@@ -134,29 +136,29 @@ const SharingList = ({ collection, onClose }) => {
             <RiClipboardFill className="text-2xl mr-2" />
             Copy Share Link
           </button>
-          
+
         </div>
         {copySuccess && <span className="text-green-600">Link copied to clipboard!</span>}
         <hr className="border-t border-purple-600 mt-2 mb-2" />
         {sharedEmails.length > 0 ? (
           <ul>
             {sharedEmails
-            .sort((a, b) => a.email > b.email ? 1 : -1)
-            .map((permission, index) => (
-              <li key={index} className="flex items-center justify-between py-2 ml-4">
-                <span>{permission.email}</span>
-                <button onClick={() => removeEmail(index)} className="flex items-center rounded-lg text-white bg-red-600 hover:bg-red-400 px-3 py-1">
-                  <RiDeleteBinFill className="text-xl mr-2" />
-                  Remove
-                </button>
-              </li>
-            ))}
+              .sort((a, b) => a.email > b.email ? 1 : -1)
+              .map((permission, index) => (
+                <li key={index} className="flex items-center justify-between py-2 ml-4">
+                  <span>{permission.email}</span>
+                  <button onClick={() => removeEmail(permission.email)} className="flex items-center rounded-lg text-white bg-red-600 hover:bg-red-400 px-3 py-1">
+                    <RiDeleteBinFill className="text-xl mr-2" />
+                    Remove
+                  </button>
+                </li>
+              ))}
           </ul>
         ) : (
           <p>You haven't shared this collection with anyone yet!</p>
         )}
         <hr className="border-t border-purple-600 mt-2 mb-8" />
-        
+
         <div className="flex mt-4 justify-center">
           <input
             type="email"
@@ -169,11 +171,10 @@ const SharingList = ({ collection, onClose }) => {
             <RiAddCircleFill className="text-xl mr-2" />
             Add Email
           </button>
-          
         </div>
         <div className="flex flex-col justify-center mt-4">
           {errorMessage && <span className="text-red-600 ml-2">{errorMessage}</span>}
-        <button className="bg-gray-500 text-white px-4 py-2 rounded-lg mt-4 ml-2" onClick={onClose}>Close</button>
+          <button className="bg-gray-500 text-white px-4 py-2 rounded-lg mt-4 ml-2" onClick={onClose}>Close</button>
         </div>
       </div>
     </div>
