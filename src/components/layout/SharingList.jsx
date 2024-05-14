@@ -11,7 +11,6 @@ const SharingList = ({ collection, onClose }) => {
   const [errorMessage, setErrorMessage] = React.useState("");
 
   useEffect(() => {
-    //TODO make api call to get shared emails
     const fetchPermissions = async () => {
       try {
         const response = await fetch(API_BASE_URL + "/collections/permissions?col_uuid=" + collection.id, {
@@ -33,7 +32,7 @@ const SharingList = ({ collection, onClose }) => {
     };
 
     fetchPermissions();
-  }, [collection.id, token, sharedEmails]);
+  }, [collection.id, token, sharedEmails.length]);
 
   const addEmail = async () => {
     const trimedEmail = newEmail.trim();
@@ -85,8 +84,28 @@ const SharingList = ({ collection, onClose }) => {
   };
 
   const removeEmail = (index) => {
-    //TODO make api call removing this
-    setSharedEmails(prevEmails => prevEmails.filter((email, i) => i !== index));
+    //TODO test this function
+    const emailToRemove = sharedEmails[index].email;
+
+    const removePermission = async () => {
+      try {
+        const response = await fetch(API_BASE_URL + "/collections/permissions?col_uuid=" + collection.id + "&email=" + emailToRemove, {
+          method: 'DELETE',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (!response.ok) {
+          throw new Error('Failed to remove permission');
+        }
+        const data = await response.json();
+        console.log('Permission removed:', data);
+        setSharedEmails(prevEmails => prevEmails.filter((email, i) => i !== index));
+      } catch (error) {
+        console.error('Error removing email:', error);
+        setErrorMessage('Failed to remove email');
+      }
+    };
   };
 
   const handleLinkCopy = () => {

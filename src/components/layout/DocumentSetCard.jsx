@@ -40,7 +40,7 @@ const DocumentSetCard = ({ token, collection }) => {
     }
 
     try {
-      const response = await fetch(API_BASE_URL + "/collections?col_uuid=" + collection.id + "&name=" + cardName, {
+      const response = await fetch(API_BASE_URL + "/collections/name?col_uuid=" + collection.id + "&name=" + cardName, {
         method: "PUT",
         headers: {
           "Authorization": `Bearer ${token}`,
