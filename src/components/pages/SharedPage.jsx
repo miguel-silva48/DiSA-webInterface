@@ -1,96 +1,125 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { API_BASE_URL } from "../../constants/index.jsx";
-import { useLocation } from 'react-router-dom';
-
+import { useSearchParams } from 'react-router-dom';
+import { RiFileDownloadLine, RiFolderDownloadFill } from 'react-icons/ri';
 import Navbar from "../layout/Navbar.jsx";
+import Footer from "../layout/Footer.jsx";
 import Background from "../layout/Background.jsx";
-import DocumentSetContent from '../layout/DocumentSetContent.jsx';
+import EmailPrompt from "../layout/EmailPrompt.jsx";
 
 const SharedPage = () => {
   const user_token = sessionStorage.getItem("access_token") || "";
-  const location = useLocation();
-  const { collection } = location.state;
-  const [collectionHistory, setCollectionHistory] = useState([]);
+  const [params, searchParams] = useSearchParams();
+  const col_uuid = params.get("col_uuid");
+  const [showEmailPrompt, setShowEmailPrompt] = useState(!user_token);
+  const [collectionInfo, setCollectionInfo] = useState(null);
 
-  const cardName = useState(collection.name || 'Untitled');
+  useEffect(() => {
+    if (!col_uuid) {
+      alert("No collection UUID provided! You were given an invalid link.");
+      window.location.href = "/";
+    }
 
-  const sharingState = collection.share_state || 'Unknown';
-  const createdDate = collectionHistory.created || 'Unknown';
+    if (!showEmailPrompt) {
+      //user is logged in -> fetch collection info with username (email)
+      fetchCollectionInfo(sessionStorage.getItem("username"));
+    }
+  }
+    , [col_uuid]);
 
-  const link = 'https://doi.org/10.5281/';
+  // Fetch collection's information
+  const fetchCollectionInfo = async (email) => {
+    try {
+      const response = await fetch(API_BASE_URL + "/collections/shared?col_uuid=" + col_uuid + "&email=" + email, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json"
+        },
+      });
 
+      if (!response.ok) {
+        alert("Error fetching collection information!");
+        return;
+      }
 
-  //TODO prompt to ask for email before sharing
-  useEffect(() => {k
+      const data = await response.json();
+      setCollectionInfo(data);
+      console.log(data);
+    } catch (error) {
+      console.error("Error fetching collection information:", error);
+      setShowEmailPrompt(true);
+    }
+  };
 
-
-
-
-    // Fetch collection's history
-    // const fetchCollectionHistory = async () => {
-    //   try {
-    //     const response = await fetch(API_BASE_URL + "/collections/info?col_uuid=" + collection.id, {
-    //       method: "GET",
-    //       headers: {
-    //         "Authorization": `Bearer ${user_token}`,
-    //         "Content-Type": "application/json"
-    //       },
-    //     });
-
-    //     if (!response.ok) {
-    //       alert("Error fetching collection history!");
-    //       return;
-    //     }
-
-    //     const data = await response.json();
-    //     setCollectionHistory(data);
-    //     console.log(data);
-    //   } catch (error) {
-    //     console.error("Error fetching collection history:", error);
-    //   }
-    // };
-
-    // fetchCollectionHistory();
-  }, []);
-
+  const handleEmailSubmit = async (email) => {
+    setShowEmailPrompt(false);
+    fetchCollectionInfo(email);
+  };
 
   const formatDate = (dateString) => {
-    const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+    const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true };
     return new Date(dateString).toLocaleDateString('en-UK', options);
+  };
+
+  const calculateTotalSize = (documents) => {
+    let totalSize = 0;
+    documents.forEach((document) => {
+      totalSize += document.size;
+    });
+    return totalSize;
+  };
+
+  const handleObtainManifest = () => {
+    //TODO - Handle manifest download
+    console.log("TODO - Handle manifest download");
+  };
+
+  const handleDownloadCollection = () => {
+    //TODO - Handle collection download
+    console.log("TODO - Handle collection download");
   };
 
 
   return (
-    <div>
+    <div className="flex flex-col min-h-screen">
       <Background />
-      <div className="flex flex-col h-screen">
-        <Navbar />
-        <div className="p-10">
-          <h1 className="font-sans text-6xl font-extrabold bg-gradient-to-b from-[#6941C6] to-[#27164F] bg-clip-text text-transparent mb-4">
-            Shared Collection
-          </h1>
-          <div className="ml-8 grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-            <div className="text-2xl col-span-2">
-              <h2 className="text-gray-600 font-bold mb-2"> {cardName}</h2>
-              <p className="text-gray-600">Submission Date: {formatDate(createdDate)}</p>
-              <p className="text-gray-600">Share State: <span className={
-                sharingState === 'available' ? 'text-green-600' :
-                  sharingState === 'private' ? 'text-red-600' :
-                    sharingState === 'embargoed' ? 'text-yellow-600' :
-                      sharingState === 'restricted' ? 'text-orange-600' :
-                        'text-gray-600'
-              }> {sharingState}</span></p>
+      <Navbar />
+      <div className="flex-grow p-10 text-center">
+        <h1 className="font-sans text-6xl font-extrabold bg-gradient-to-b from-[#6941C6] to-[#27164F] bg-clip-text text-transparent mb-4">
+          Shared Collection
+        </h1>
+        <h2 className="text-3xl text-gray-600 mt-2 mb-10">
+          Here you can see information about the collection that was shared with you and download it!
+        </h2>
+        {showEmailPrompt && <EmailPrompt onSubmit={handleEmailSubmit} />}
+        {!showEmailPrompt && collectionInfo && (
+          <div className='w-full max-w-lg mx-auto border bg-slate-100 rounded-lg p-6 shadow-md'>
+            <div className="items-center justify-center font-sans text-3xl font-bold text-gray-800">
+              <p className="mb-4"> Collection name: {collectionInfo.name}</p>
+              <p className="mb-4"> Submission Date: {formatDate(collectionInfo.created)}</p>
+              <p className="mb-4"> Number of files: {collectionInfo.documents.length}</p>
+              <p className="mb-4"> Total Collection Size: {calculateTotalSize(collectionInfo.documents)} bytes</p>
+            </div>
+            <div className="flex justify-center gap-4 mt-12">
+              <button
+                className="text-xl text-white font-bold rounded-lg bg-slate-600 hover:bg-indigo-400 px-6 py-3 transition duration-300 ease-in-out flex items-center gap-2"
+                onClick={handleObtainManifest}
+              >
+                <RiFileDownloadLine className="text-2xl" />
+                Obtain Manifest
+              </button>
+              <button
+                className="text-xl text-white font-bold rounded-lg bg-purple-600 hover:bg-indigo-500 px-5 py-3 transition duration-300 ease-in-out flex items-center gap-2"
+                onClick={handleDownloadCollection}
+              >
+                <RiFolderDownloadFill className="text-2xl" />
+                Download Collection
+              </button>
             </div>
           </div>
-          {collectionHistory.documents && <DocumentSetContent documents={collectionHistory.documents} />}
-        </div>
-        <button
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="fixed bottom-4 right-4 bg-purple-600 text-white p-2 rounded-full"
-        >
-          ↑ Back to top
-        </button>
+        )}
       </div>
+      <Footer />
     </div>
   );
 };

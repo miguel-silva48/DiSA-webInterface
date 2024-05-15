@@ -3,7 +3,7 @@ import { API_BASE_URL } from "../../constants/index.jsx";
 import { RiClipboardFill, RiDeleteBinFill, RiAddCircleFill } from 'react-icons/ri';
 
 const SharingList = ({ collection, onClose }) => {
-  const link = `https://localhost:3000/shared?col_uuid=${collection.id}`;
+  const link = `http://localhost:3000/shared?col_uuid=${collection.id}`;
   const token = sessionStorage.getItem('access_token');
   const [sharedEmails, setSharedEmails] = useState([]);
   const [newEmail, setNewEmail] = useState("");

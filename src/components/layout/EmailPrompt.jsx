@@ -2,10 +2,21 @@ import React, { useState } from 'react';
 
 const EmailPrompt = ({ onSubmit }) => {
   const [email, setEmail] = useState('');
+  const [error, setError] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (!validateEmail(email)) {
+      setError('Invalid email');
+      return;
+    }
     onSubmit(email);
+  };
+
+  const validateEmail = (email) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
   };
 
   return (
@@ -20,6 +31,7 @@ const EmailPrompt = ({ onSubmit }) => {
             className="border border-gray-300 rounded px-4 py-2 w-full mb-4"
             required
           />
+          {error && <p className="text-red-500">{error}</p>}
           <button type="submit" className="bg-blue-500 text-white rounded px-4 py-2">
             Submit
           </button>
