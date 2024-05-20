@@ -4,6 +4,7 @@ import LoginPage from "./components/pages/LoginPage";
 import RegisterPage from "./components/pages/RegisterPage";
 import DashboardPage from "./components/pages/DashboardPage";
 import CollectionPage from "./components/pages/CollectionPage";
+import SharedPage from "./components/pages/SharedPage";
 import AboutPage from "./components/pages/About";
 
 import ErrorPage from "./components/pages/ErrorPage";
@@ -17,6 +18,7 @@ const App = () => {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/dashboard/collection" element={<CollectionPage />} />
+        <Route path="/shared" element={<SharedPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
