@@ -3,7 +3,7 @@ import { API_BASE_URL } from "../../constants/index.jsx";
 import { useNavigate } from 'react-router-dom';
 import SharingList from '../layout/SharingList.jsx';
 
-import { RiPencilFill, RiSettingsFill, RiShareFill, RiCheckboxCircleFill } from 'react-icons/ri';
+import { RiPencilFill, RiSettingsFill, RiShareFill, RiCheckboxCircleFill, RiDownloadFill } from 'react-icons/ri';
 
 const DocumentSetCard = ({ token, collection }) => {
   const navigate = useNavigate();
@@ -70,6 +70,22 @@ const DocumentSetCard = ({ token, collection }) => {
     }
   };
 
+//TODO test download collection
+  const handleDownloadCollection = async () => {
+    try {
+      fetch(API_BASE_URL + "/collections/download?col_uuid=" + collection.id, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    }
+    catch (error) {
+      console.error("Error downloading collection:", error);
+    }
+  };
+
   const handleManageCollection = () => {
     navigate('/dashboard/collection', { state: { collection: collection } });
   };
@@ -109,7 +125,7 @@ const DocumentSetCard = ({ token, collection }) => {
           </div>
           <button onClick={handleManageCollection}>
             <div className="flex gap-2 border-2 border-black rounded-lg ">
-              <p className="text-xl font-bold">Manage collection</p>
+              <p className="text-xl font-bold">Manage</p>
               <RiSettingsFill /></div>
           </button>
         </div>
@@ -118,9 +134,14 @@ const DocumentSetCard = ({ token, collection }) => {
 
         <div className="flex gap-20 justify-between">
           <p className="text-xl">Submission Date: {formatDate(createdDate)}</p>
+          <button onClick={handleDownloadCollection}>
+            <div className="flex gap-2 border-2 border-black rounded-lg ">
+              <p className="text-xl font-bold">Download</p>
+              <RiDownloadFill className='text-2xl' /></div>
+          </button>
           <button onClick={handleShareCollection}>
             <div className="flex gap-2 border-2 border-black rounded-lg ">
-              <p className="text-xl font-bold">Share collection</p>
+              <p className="text-xl font-bold">Share</p>
               <RiShareFill className='text-2xl' /></div>
           </button>
         </div>

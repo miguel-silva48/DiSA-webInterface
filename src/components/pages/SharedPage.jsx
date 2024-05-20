@@ -69,14 +69,24 @@ const SharedPage = () => {
     return totalSize;
   };
 
-  const handleObtainManifest = () => {
+  const handleObtainManifest = async (email) => {
     //TODO - Handle manifest download
     console.log("TODO - Handle manifest download");
   };
 
-  const handleDownloadCollection = () => {
+  const handleDownloadCollection = async (email) => {
     //TODO - Handle collection download
     console.log("TODO - Handle collection download");
+    try {
+      fetch(API_BASE_URL + "/collections/download?col_uuid=" + col_uuid + "&email=" + email, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+    } catch (error) {
+      console.error("Error downloading collection:", error);
+    }
   };
 
 
