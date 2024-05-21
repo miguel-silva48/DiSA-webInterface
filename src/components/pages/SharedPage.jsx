@@ -13,6 +13,7 @@ const SharedPage = () => {
   const col_uuid = params.get("col_uuid");
   const [showEmailPrompt, setShowEmailPrompt] = useState(!user_token);
   const [collectionInfo, setCollectionInfo] = useState(null);
+  const [email, setEmail] = useState(null);
 
   useEffect(() => {
     if (!col_uuid) {
@@ -52,6 +53,7 @@ const SharedPage = () => {
   };
 
   const handleEmailSubmit = async (email) => {
+    setEmail(email);
     setShowEmailPrompt(false);
     fetchCollectionInfo(email);
   };
@@ -74,16 +76,17 @@ const SharedPage = () => {
     console.log("TODO - Handle manifest download");
   };
 
-  const handleDownloadCollection = async (email) => {
+  const handleDownloadCollection = async () => {
     //TODO - Handle collection download
     console.log("TODO - Handle collection download");
     try {
-      fetch(API_BASE_URL + "/collections/download?col_uuid=" + col_uuid + "&email=" + email, {
+      let res = await fetch(API_BASE_URL + "/collections/download?col_uuid=" + col_uuid + "&email=" + email, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
         },
       });
+      window.open(res.url, '_blank').focus();
     } catch (error) {
       console.error("Error downloading collection:", error);
     }
