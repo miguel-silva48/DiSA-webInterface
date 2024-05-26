@@ -3,11 +3,12 @@ import { API_BASE_URL } from "../../constants/index.jsx";
 import { useNavigate } from 'react-router-dom';
 import SharingList from '../layout/SharingList.jsx';
 
-import { RiPencilFill, RiSettingsFill, RiShareFill, RiCheckboxCircleFill } from 'react-icons/ri';
+import { RiPencilFill, RiSettingsFill, RiShareFill, RiCheckboxCircleFill, RiDownloadFill } from 'react-icons/ri';
 
 const DocumentSetCard = ({ token, collection }) => {
   const navigate = useNavigate();
   const [showSharingModal, setShowSharingModal] = useState(false);
+  const username = sessionStorage.getItem("username");
 
   const [cardName, setName] = useState(collection.name || 'Untitled');
   const [editingName, setEditingName] = useState(false);
@@ -70,6 +71,23 @@ const DocumentSetCard = ({ token, collection }) => {
     }
   };
 
+  const handleDownloadCollection = async () => {
+    try {
+      const response = await fetch(API_BASE_URL + "/collections/download?col_uuid=" + collection.id + "&email=" + username, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          //TODO - Add token (was complaining about 2 authentication methods)
+          // Authorization: `Bearer ${token}`,
+        },
+      });
+      window.open(response.url, '_blank').focus();
+    }
+    catch (error) {
+      console.error("Error downloading collection:", error);
+    }
+  };
+
   const handleManageCollection = () => {
     navigate('/dashboard/collection', { state: { collection: collection } });
   };
@@ -83,33 +101,33 @@ const DocumentSetCard = ({ token, collection }) => {
       <div className="w-2/3 border-2 border-gray-600 rounded-lg bg-white p-4">
         <div className="flex items-center justify-between mb-4 text-2xl font-bold">
           <div className="flex gap-2">
-          <h2 className="text-gray-600 font-bold mb-2">
-            {editingName ? (
-              <form onSubmit={handleNameSubmit} className="flex items-center">
-                <input
-                  type="text"
-                  value={cardName}
-                  onChange={(e) => setName(e.target.value)}
-                  className="text-xl font-bold text-gray-600 rounded-lg border border-purple-600 px-3 py-2 mr-2"
-                />
-                <button type="submit" className="text-purple-600">
-                  <RiCheckboxCircleFill />
-                </button>
-              </form>
-            ) : (
-              <>
-                Collection name: {cardName}
-                <button onClick={() => setEditingName(true)} className="text-purple-600 ml-2">
-                  <RiPencilFill />
-                </button>
-              </>
-            )}
-          </h2>
-          {nameError && <p className="text-base text-red-600">{nameError}</p>}
+            <h2 className="text-gray-600 font-bold mb-2">
+              {editingName ? (
+                <form onSubmit={handleNameSubmit} className="flex items-center">
+                  <input
+                    type="text"
+                    value={cardName}
+                    onChange={(e) => setName(e.target.value)}
+                    className="text-xl font-bold text-gray-600 rounded-lg border border-purple-600 px-3 py-2 mr-2"
+                  />
+                  <button type="submit" className="text-purple-600">
+                    <RiCheckboxCircleFill />
+                  </button>
+                </form>
+              ) : (
+                <>
+                  Collection name: {cardName}
+                  <button onClick={() => setEditingName(true)} className="text-purple-600 ml-2">
+                    <RiPencilFill />
+                  </button>
+                </>
+              )}
+            </h2>
+            {nameError && <p className="text-base text-red-600">{nameError}</p>}
           </div>
           <button onClick={handleManageCollection}>
             <div className="flex gap-2 border-2 border-black rounded-lg ">
-              <p className="text-xl font-bold">Manage collection</p>
+              <p className="text-xl font-bold">Manage</p>
               <RiSettingsFill /></div>
           </button>
         </div>
@@ -118,9 +136,14 @@ const DocumentSetCard = ({ token, collection }) => {
 
         <div className="flex gap-20 justify-between">
           <p className="text-xl">Submission Date: {formatDate(createdDate)}</p>
+          <button onClick={handleDownloadCollection}>
+            <div className="flex gap-2 border-2 border-black rounded-lg ">
+              <p className="text-xl font-bold">Download</p>
+              <RiDownloadFill className='text-2xl' /></div>
+          </button>
           <button onClick={handleShareCollection}>
             <div className="flex gap-2 border-2 border-black rounded-lg ">
-              <p className="text-xl font-bold">Share collection</p>
+              <p className="text-xl font-bold">Share</p>
               <RiShareFill className='text-2xl' /></div>
           </button>
         </div>

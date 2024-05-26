@@ -24,7 +24,7 @@ const HomePage = () => {
                 <form className="w-3/5 border-2 border-gray-600 rounded-lg bg-white p-8">
                   <h2 className="text-2xl font-bold text-gray-600 text-center mb-6">Want to submit files? <u className="text-purple-500">Find out how</u></h2>
                   <hr className="border-t border-purple-500 mb-4" />
-                  <h2 className="text-2xl font-bold text-gray-600 text-center mb-2">Want to retrive files?</h2>
+                  <h2 className="text-2xl font-bold text-gray-600 text-center mb-2">Want to retrieve files?</h2>
                   <div className="flex items-center">
                     <input
                       className="w-4/5 border border-gray-400 rounded p-2 mr-4 flex-grow"
