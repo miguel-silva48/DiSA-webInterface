@@ -77,16 +77,14 @@ const SharedPage = () => {
   };
 
   const handleDownloadCollection = async () => {
-    //TODO - Handle collection download
-    console.log("TODO - Handle collection download");
     try {
-      let res = await fetch(API_BASE_URL + "/collections/download?col_uuid=" + col_uuid + "&email=" + email, {
+      const response = await fetch(API_BASE_URL + "/collections/download?col_uuid=" + col_uuid + "&email=" + email, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
         },
       });
-      window.open(res.url, '_blank').focus();
+      window.open(response.url, '_blank').focus();
     } catch (error) {
       console.error("Error downloading collection:", error);
     }
