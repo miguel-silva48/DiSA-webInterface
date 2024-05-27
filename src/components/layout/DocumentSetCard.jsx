@@ -3,7 +3,7 @@ import { API_BASE_URL } from "../../constants/index.jsx";
 import { useNavigate } from 'react-router-dom';
 import SharingList from '../layout/SharingList.jsx';
 
-import { RiPencilFill, RiSettingsFill, RiShareFill, RiCheckboxCircleFill, RiDownloadFill } from 'react-icons/ri';
+import { RiPencilFill, RiShareFill, RiCheckboxCircleFill, RiDownloadFill } from 'react-icons/ri';
 
 const DocumentSetCard = ({ token, collection }) => {
   const navigate = useNavigate();
@@ -88,9 +88,6 @@ const DocumentSetCard = ({ token, collection }) => {
     }
   };
 
-  const handleManageCollection = () => {
-    navigate('/dashboard/collection', { state: { collection: collection } });
-  };
 
   const handleShareCollection = () => {
     setShowSharingModal(true);
@@ -125,10 +122,10 @@ const DocumentSetCard = ({ token, collection }) => {
             </h2>
             {nameError && <p className="text-base text-red-600">{nameError}</p>}
           </div>
-          <button onClick={handleManageCollection}>
+          <button onClick={handleShareCollection}>
             <div className="flex gap-2 border-2 border-black rounded-lg ">
-              <p className="text-xl font-bold">Manage</p>
-              <RiSettingsFill /></div>
+              <p className="text-xl font-bold">Share</p>
+              <RiShareFill className='text-2xl' /></div>
           </button>
         </div>
 
@@ -141,11 +138,7 @@ const DocumentSetCard = ({ token, collection }) => {
               <p className="text-xl font-bold">Download</p>
               <RiDownloadFill className='text-2xl' /></div>
           </button>
-          <button onClick={handleShareCollection}>
-            <div className="flex gap-2 border-2 border-black rounded-lg ">
-              <p className="text-xl font-bold">Share</p>
-              <RiShareFill className='text-2xl' /></div>
-          </button>
+
         </div>
         {showSharingModal && <SharingList collection={collection} onClose={() => setShowSharingModal(false)} />}
       </div>
