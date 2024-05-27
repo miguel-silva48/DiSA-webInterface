@@ -17,6 +17,7 @@ const RegisterPage = () => {
     nic: ""
   });
   const [formErrors, setFormErrors] = useState({});
+  const [registrationError, setRegistrationError] = useState(false);
   const [registrationMethod, setRegistrationMethod] = useState('cmd'); // 'cmd' or 'normal'
 
   const handleChange = (e) => {
@@ -28,6 +29,7 @@ const RegisterPage = () => {
   };
 
   const handleRegister = async () => {
+    setFormErrors({});
     const newErrors = {};
     if (!formData.name || formData.name.length < 3) {
       newErrors.name = "Name field is required and should have at least 3 characters";
@@ -59,7 +61,7 @@ const RegisterPage = () => {
         }
       } catch (error) {
         console.error("ERROR IN REGISTER:", error);
-        alert("Error registering user, please try again later.");
+        setRegistrationError(true);
       }
 
       setFormData({
@@ -145,6 +147,7 @@ const RegisterPage = () => {
                   <input type="text" id="nic" name="nic" value={formData.nic} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 leading-tight focus:outline-none focus:shadow-outline" placeholder="Insert your civil number here" />
                   {formErrors.nic && <p className="text-red-500">{formErrors.nic}</p>}
                 </div>
+                {registrationError && <p className="text-red-500 text-center">Registration Error: Invalid data!</p>}
                 <div className="flex items-center justify-between">
                   <Link to="/" className="text-purple-600 hover:text-indigo-400">Back to HomePage</Link>
                   <button type="button" onClick={handleRegister} className="bg-purple-600 hover:bg-indigo-400 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Register</button>

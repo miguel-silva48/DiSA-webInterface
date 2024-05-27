@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { API_BASE_URL } from "../../constants/index.jsx";
 
@@ -14,6 +14,7 @@ const LoginPage = () => {
     password: ""
   });
   const [formErrors, setFormErrors] = useState({});
+  const [loginError, setLoginError] = useState(false);
   const [loginMethod, setLoginMethod] = useState('cmd'); // 'normal' or 'cmd'
 
   const handleChange = (e) => {
@@ -25,9 +26,11 @@ const LoginPage = () => {
   };
 
   const handleLogin = async () => {
+    setFormErrors({});
+    setLoginError(false);
     const newErrors = {};
     if (!formData.username) {
-      newErrors.username = "Username field is required!";
+      newErrors.username = "Email field is required!";
     }
     if (!formData.password) {
       newErrors.password = "Password field is required!";
@@ -48,7 +51,7 @@ const LoginPage = () => {
         });
 
         if (!response.ok) {
-          alert("Invalid credentials!");
+          setLoginError(true);
           return;
         }
 
@@ -57,6 +60,7 @@ const LoginPage = () => {
         if (response.ok) {
           sessionStorage.setItem('username', formData.username);
           sessionStorage.setItem('access_token', data.access_token);
+          setLoginError(false);
           alert("User logged in successfully!");
           navigate("/dashboard");
         }
@@ -130,6 +134,7 @@ const LoginPage = () => {
                   <input type="password" id="password" name="password" value={formData.password} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 leading-tight focus:outline-none focus:shadow-outline" placeholder="Insert your password here" />
                   {formErrors.password && <p className="text-red-500">{formErrors.password}</p>}
                 </div>
+                {loginError && <p className="text-red-500 text-center">Login Error: Invalid credentials!</p>}
                 <div className="flex items-center justify-between">
                   <Link to="/" className="text-purple-600 hover:text-indigo-400">Back to HomePage</Link>
                   <button type="button" onClick={handleLogin} className="bg-purple-600 hover:bg-indigo-400 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Login</button>
