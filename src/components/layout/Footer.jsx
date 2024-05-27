@@ -9,7 +9,7 @@ const Footer = () => {
         <div className="md:w-1/3 mt-6 md:mt-0">
           <h3 className="text-xl font-bold mb-4">Contact Us</h3>
           <p>Aveiro University, Portugal</p>
-          <p>Email: example@example.com</p>
+          <p>Find us on GitHub: <a href="https://github.com/Mycsina/DiSA" className="text-purple-500 underline">DiSA</a></p>
         </div>
       </div>
       <div className="text-center mt-8">

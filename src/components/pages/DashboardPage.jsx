@@ -75,7 +75,7 @@ const DashboardPage = () => {
 
           {collections.length > 0 ? (
             collections.map((collection) => (
-              <DocumentSetCard key={collection.id} collection={collection} />
+              <DocumentSetCard key={collection.id} token={user_token} collection={collection} />
             ))
           ) : (
             <p className="mt-10 text-4xl">You don't have any collections yet. Try using our CLI tool to submit files!</p>
