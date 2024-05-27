@@ -99,11 +99,11 @@ const LoginPage = () => {
                 className={`p-2 rounded ${loginMethod === 'normal' ? 'bg-purple-600 text-white' : 'bg-gray-200 text-black'}`}
                 onClick={() => setLoginMethod('normal')}
               >
-                Login with Username
+                Login with Email
               </button>
             </div>
             {loginMethod === 'cmd' ? (
-              <div className="w-[500px] bg-white rounded-xl shadow-md flex flex-col items-center justify-center p-5 opacity-80 max-h-[500px] mx-auto gap-10">
+              <div className="w-full max-w-lg mx-auto bg-white rounded-xl shadow-md flex flex-col items-center justify-center p-5 opacity-80 max-h-[500px] gap-10">
                 <div className="flex-grow flex flex-col items-center">
                   <p className="font-semibold text-center mb-4">
                     This app uses Autenticacao.gov to authenticate accounts, please click the button below to login.
@@ -121,8 +121,8 @@ const LoginPage = () => {
             ) : (
               <form className="w-full max-w-lg mx-auto border bg-white rounded-xl p-8 opacity-80 shadow-md">
                 <div className="mb-6">
-                  <label htmlFor="username" className="block font-semibold mb-2">Username</label>
-                  <input type="text" id="username" name="username" value={formData.username} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 leading-tight focus:outline-none focus:shadow-outline" placeholder="Insert your username here" />
+                  <label htmlFor="username" className="block font-semibold mb-2">Email</label>
+                  <input type="text" id="username" name="username" value={formData.username} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 leading-tight focus:outline-none focus:shadow-outline" placeholder="Insert your email here" />
                   {formErrors.username && <p className="text-red-500">{formErrors.username}</p>}
                 </div>
                 <div className="mb-6">
