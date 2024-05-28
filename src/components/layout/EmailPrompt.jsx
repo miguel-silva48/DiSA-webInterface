@@ -42,7 +42,7 @@ const EmailPrompt = ({ onSubmit }) => {
             <button type="button" onClick={handleBackToHome} className="bg-gray-500 text-white rounded px-4 py-2">
               Back to Home
             </button>
-            <button type="submit" className="bg-blue-500 text-white rounded px-4 py-2">
+            <button type="submit" className="bg-purple-600 text-white rounded px-4 py-2">
               Submit
             </button>
           </div>
