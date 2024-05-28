@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { EMAIL_REGEX } from '../../constants';
 
 const EmailPrompt = ({ onSubmit }) => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
 
@@ -19,6 +21,10 @@ const EmailPrompt = ({ onSubmit }) => {
     return EMAIL_REGEX.test(email);
   };
 
+  const handleBackToHome = () => {
+    navigate('/');
+  };
+
   return (
     <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-800 bg-opacity-50">
       <div className="bg-white p-6 rounded shadow-lg">
@@ -32,9 +38,14 @@ const EmailPrompt = ({ onSubmit }) => {
             required
           />
           {error && <p className="text-red-500">{error}</p>}
-          <button type="submit" className="bg-blue-500 text-white rounded px-4 py-2">
-            Submit
-          </button>
+          <div className="flex justify-between">
+            <button type="button" onClick={handleBackToHome} className="bg-gray-500 text-white rounded px-4 py-2">
+              Back to Home
+            </button>
+            <button type="submit" className="bg-blue-500 text-white rounded px-4 py-2">
+              Submit
+            </button>
+          </div>
         </form>
       </div>
     </div>
