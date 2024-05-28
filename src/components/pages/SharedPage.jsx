@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { API_BASE_URL } from "../../constants/index.jsx";
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { RiFileDownloadLine, RiFolderDownloadFill } from 'react-icons/ri';
 import Navbar from "../layout/Navbar.jsx";
 import Footer from "../layout/Footer.jsx";
@@ -8,6 +8,7 @@ import Background from "../layout/Background.jsx";
 import EmailPrompt from "../layout/EmailPrompt.jsx";
 
 const SharedPage = () => {
+  const navigate = useNavigate();
   const user_token = sessionStorage.getItem("access_token") || "";
   const [params, searchParams] = useSearchParams();
   const col_uuid = params.get("col_uuid");
@@ -18,7 +19,7 @@ const SharedPage = () => {
   useEffect(() => {
     if (!col_uuid) {
       alert("No collection UUID provided! You were given an invalid link.");
-      window.location.href = "/";
+      navigate("/");
     }
 
     if (!showEmailPrompt) {

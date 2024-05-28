@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { EMAIL_REGEX } from '../../constants';
 
 const EmailPrompt = ({ onSubmit }) => {
   const [email, setEmail] = useState('');
@@ -15,8 +16,7 @@ const EmailPrompt = ({ onSubmit }) => {
   };
 
   const validateEmail = (email) => {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return regex.test(email);
+    return EMAIL_REGEX.test(email);
   };
 
   return (

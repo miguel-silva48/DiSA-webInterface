@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { API_BASE_URL } from "../../constants/index.jsx";
+import { API_BASE_URL, EMAIL_REGEX } from "../../constants/index.jsx";
 import { RiClipboardFill, RiDeleteBinFill, RiAddCircleFill } from 'react-icons/ri';
 
 const SharingList = ({ collection, onClose }) => {
@@ -45,8 +45,7 @@ const SharingList = ({ collection, onClose }) => {
     }
 
     // If it is not an email, alert with error
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(trimedEmail)) {
+    if (!EMAIL_REGEX.test(trimedEmail)) {
       //alert("Invalid email, please enter a valid email and try again.");
       setErrorMessage("Invalid email, please enter a valid email and try again.");
       setNewEmail("");
