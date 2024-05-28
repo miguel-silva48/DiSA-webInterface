@@ -15,7 +15,7 @@ const DocumentSetCard = ({ token, collection }) => {
   const [nameError, setNameError] = useState(null);
 
   const createdDate = collection.created ? collection.created : 'Unknown';
-  const link = collection.id ? 'https://localhost:3000/shared?col_uuid=' + collection.id : null;
+  const link = collection.id ? 'http://localhost:3000/shared?col_uuid=' + collection.id : null;
 
   // Format date to be more readable
   const formatDate = (dateString) => {
