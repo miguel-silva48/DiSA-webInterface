@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { API_BASE_URL } from "../../constants/index.jsx";
 import { useNavigate } from 'react-router-dom';
-import SharingList from '../layout/SharingList.jsx';
+import SharingList from './SharingList.jsx';
 
 import { RiPencilFill, RiShareFill, RiCheckboxCircleFill, RiDownloadFill } from 'react-icons/ri';
 
-const DocumentSetCard = ({ token, collection }) => {
+const CollectionCard = ({ token, collection }) => {
   const navigate = useNavigate();
   const [showSharingModal, setShowSharingModal] = useState(false);
   const username = sessionStorage.getItem("username");
@@ -123,7 +123,7 @@ const DocumentSetCard = ({ token, collection }) => {
             {nameError && <p className="text-base text-red-600">{nameError}</p>}
           </div>
           <button onClick={handleShareCollection}>
-            <div className="flex gap-2 border-2 border-black rounded-lg ">
+            <div className="flex gap-2 border-2 border-black rounded-lg px-3 py-1">
               <p className="text-xl font-bold">Share</p>
               <RiShareFill className='text-2xl' /></div>
           </button>
@@ -131,10 +131,10 @@ const DocumentSetCard = ({ token, collection }) => {
 
         <hr className="border-t border-purple-500 mb-4" />
 
-        <div className="flex gap-20 justify-between">
+        <div className="flex gap-20 justify-between items-center">
           <p className="text-xl">Submission Date: {formatDate(createdDate)}</p>
           <button onClick={handleDownloadCollection}>
-            <div className="flex gap-2 border-2 border-black rounded-lg ">
+            <div className="flex gap-2 border-2 border-black rounded-lg px-3 py-1">
               <p className="text-xl font-bold">Download</p>
               <RiDownloadFill className='text-2xl' /></div>
           </button>
@@ -146,4 +146,4 @@ const DocumentSetCard = ({ token, collection }) => {
   );
 };
 
-export default DocumentSetCard;
+export default CollectionCard;
