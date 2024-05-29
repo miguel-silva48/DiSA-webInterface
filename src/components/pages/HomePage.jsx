@@ -12,6 +12,7 @@ const HomePage = () => {
   const [linkError, setLinkError] = useState(null);
 
   const handleConfirmClick = () => {
+    setLinkError(null);
     // Check if link exists
     if (!link) {
       setLinkError("Please insert a link before proceding!");
@@ -60,6 +61,12 @@ const HomePage = () => {
                       placeholder="Insert your link here"
                       value={link}
                       onChange={(e) => setLink(e.target.value)}
+                      onKeyPress={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault(),
+                            handleConfirmClick();
+                        }
+                      }}
                     />
                     <button
                       type="button"
@@ -73,7 +80,7 @@ const HomePage = () => {
                       </div>
                     </button>
                   </div>
-                </form>
+                  {linkError && <p className="mt-2 text-red-500">{linkError}</p>}</form>
               </div>
             </div>
             <div className="hidden lg:block w-[40%] h-full p-20">
