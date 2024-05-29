@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { UUID_REGEX } from "../../constants/index.jsx";
 import Navbar from "../layout/Navbar.jsx";
 import Footer from "../layout/Footer.jsx";
 import Background from "../layout/Background.jsx";
@@ -21,12 +22,19 @@ const HomePage = () => {
 
     // Check if link is valid
     if (!link.startsWith("http://localhost:3000/shared?col_uuid=")) {
-      setLinkError("Invalid link! Please insert a valid link.");
+      setLinkError("Invalid link! Please insert a valid link and try again.");
+      return;
+    }
+
+    // Check if UUID is valid
+    const collection_uuid = link.split("=")[1];
+    if (!UUID_REGEX.test(collection_uuid)) {
+      setLinkError("Invalid collection_uuid! Please insert a link with a valid collection_uuid and try again.");
       return;
     }
 
     // Redirect to shared page
-    navigate("/shared?col_uuid=" + link.split("=")[1]);
+    navigate("/shared?col_uuid=" + collection_uuid);
   };
 
   const handleFindOutHowClick = () => {
@@ -80,7 +88,8 @@ const HomePage = () => {
                       </div>
                     </button>
                   </div>
-                  {linkError && <p className="mt-2 text-red-500">{linkError}</p>}</form>
+                  {linkError && <p className="mt-2 text-red-500">{linkError}</p>}
+                </form>
               </div>
             </div>
             <div className="hidden lg:block w-[40%] h-full p-20">
