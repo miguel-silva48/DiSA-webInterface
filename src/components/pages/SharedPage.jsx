@@ -106,7 +106,7 @@ const SharedPage = () => {
         {showEmailPrompt && <EmailPrompt onSubmit={handleEmailSubmit} />}
         {!showEmailPrompt && collectionInfo && (
           <div className='w-full max-w-lg mx-auto border bg-slate-100 rounded-lg p-6 shadow-md'>
-            <div className="items-center justify-center font-sans text-3xl font-bold text-gray-800">
+            <div className="items-center justify-center font-sans text-2xl font-bold text-gray-800">
               <p className="mb-4"> Collection name: {collectionInfo.name}</p>
               <p className="mb-4"> Submission Date: {formatDate(collectionInfo.created)}</p>
               <p className="mb-4"> Number of files: {collectionInfo.documents.length}</p>

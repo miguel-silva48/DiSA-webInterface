@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { API_BASE_URL } from "../../constants/index.jsx";
 import Navbar from "../layout/Navbar.jsx";
 import Footer from "../layout/Footer.jsx";
 import Background from "../layout/Background.jsx";
-import DocumentSetCard from "../layout/DocumentSetCard.jsx";
+import CollectionCard from "../layout/CollectionCard.jsx";
 import { AiOutlineClose } from "react-icons/ai";
 
 const DashboardPage = () => {
+  const navigate = useNavigate();
   const user_token = sessionStorage.getItem("access_token") || "";
   const [collections, setCollections] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -14,7 +16,7 @@ const DashboardPage = () => {
   useEffect(() => {
     if (sessionStorage.getItem("access_token") === null) {
       alert("You must be logged in to access this!");
-      window.location.href = "/login";
+      navigate("/login");
     }
 
     const fetchUserCollections = async () => {
@@ -33,6 +35,7 @@ const DashboardPage = () => {
 
         const data = await response.json();
         setCollections(data);
+        console.log(data);
       } catch (error) {
         console.error("Error fetching user collections:", error);
       }
@@ -93,7 +96,7 @@ const DashboardPage = () => {
                 Showing {filteredCollections.length} of {collections.length} collections
               </p>
               {filteredCollections.map((collection) => (
-                <DocumentSetCard key={collection.id} token={user_token} collection={collection} />
+                <CollectionCard key={collection.id} collection={collection} />
               ))}
             </>
           ) : (

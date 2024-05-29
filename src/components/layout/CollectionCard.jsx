@@ -5,9 +5,10 @@ import SharingList from './SharingList.jsx';
 
 import { RiPencilFill, RiShareFill, RiCheckboxCircleFill, RiDownloadFill } from 'react-icons/ri';
 
-const CollectionCard = ({ token, collection }) => {
+const CollectionCard = ({ collection }) => {
   const navigate = useNavigate();
   const [showSharingModal, setShowSharingModal] = useState(false);
+  const token = sessionStorage.getItem("access_token");
   const username = sessionStorage.getItem("username");
 
   const [cardName, setName] = useState(collection.name || 'Untitled');
