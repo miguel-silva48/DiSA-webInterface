@@ -37,6 +37,7 @@ export default function CMDLogin() {
                 }
                 console.log("LOGIN RESPONSE:", data);
                 sessionStorage.setItem("access_token", data.access_token)
+                sessionStorage.setItem("username", data.username)
                 navigate("/dashboard");
             }).catch((error) => {
                 console.error("ERROR IN LOGIN:", error);
