@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { EMAIL_REGEX } from '../../constants';
 
 const EmailPrompt = ({ onSubmit }) => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
 
@@ -15,8 +18,11 @@ const EmailPrompt = ({ onSubmit }) => {
   };
 
   const validateEmail = (email) => {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return regex.test(email);
+    return EMAIL_REGEX.test(email);
+  };
+
+  const handleBackToHome = () => {
+    navigate('/');
   };
 
   return (
@@ -32,9 +38,14 @@ const EmailPrompt = ({ onSubmit }) => {
             required
           />
           {error && <p className="text-red-500">{error}</p>}
-          <button type="submit" className="bg-blue-500 text-white rounded px-4 py-2">
-            Submit
-          </button>
+          <div className="flex justify-between">
+            <button type="button" onClick={handleBackToHome} className="bg-gray-500 text-white rounded px-4 py-2">
+              Back to Home
+            </button>
+            <button type="submit" className="bg-purple-600 text-white rounded px-4 py-2">
+              Submit
+            </button>
+          </div>
         </form>
       </div>
     </div>

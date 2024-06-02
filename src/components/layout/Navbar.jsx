@@ -18,7 +18,7 @@ const Navbar = () => {
   }
 
   return (
-    <nav className="navbar bg-transparent w-full flex items-center p-2 top-0 gap-4">
+    <nav className="navbar bg-transparent w-full grid grid-cols-3 items-center p-2 top-0 gap-4 justify-between">
       <Link to="/">
         <img src={logo} className="max-h-20 pl-5" alt="DiSA HomePage" />
       </Link>
@@ -29,7 +29,7 @@ const Navbar = () => {
       </div>
 
       {!isLoggedIn ? (
-          <div className="flex gap-4 items-center">
+          <div className="flex gap-4 items-center justify-end">
             <Link to="/register">
               <button className="text-xl text-white font-bold rounded-lg bg-slate-600 hover:bg-indigo-400 px-6 py-3 transition duration-300 ease-in-out">
                 Register
@@ -42,7 +42,7 @@ const Navbar = () => {
             </Link>
           </div>
         ) : (
-          <div className="flex gap-4 items-center">
+          <div className="flex gap-4 items-center justify-end">
             <span className="text-xl text-black font-bold">
               Hi, {username}
             </span>

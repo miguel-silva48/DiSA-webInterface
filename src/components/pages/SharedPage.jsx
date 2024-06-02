@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { API_BASE_URL } from "../../constants/index.jsx";
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { RiFileDownloadLine, RiFolderDownloadFill } from 'react-icons/ri';
 import Navbar from "../layout/Navbar.jsx";
 import Footer from "../layout/Footer.jsx";
@@ -8,6 +8,7 @@ import Background from "../layout/Background.jsx";
 import EmailPrompt from "../layout/EmailPrompt.jsx";
 
 const SharedPage = () => {
+  const navigate = useNavigate();
   const user_token = sessionStorage.getItem("access_token") || "";
   const [params, searchParams] = useSearchParams();
   const col_uuid = params.get("col_uuid");
@@ -18,7 +19,7 @@ const SharedPage = () => {
   useEffect(() => {
     if (!col_uuid) {
       alert("No collection UUID provided! You were given an invalid link.");
-      window.location.href = "/";
+      navigate("/");
     }
 
     if (!showEmailPrompt) {
@@ -105,7 +106,7 @@ const SharedPage = () => {
         {showEmailPrompt && <EmailPrompt onSubmit={handleEmailSubmit} />}
         {!showEmailPrompt && collectionInfo && (
           <div className='w-full max-w-lg mx-auto border bg-slate-100 rounded-lg p-6 shadow-md'>
-            <div className="items-center justify-center font-sans text-3xl font-bold text-gray-800">
+            <div className="items-center justify-center font-sans text-2xl font-bold text-gray-800">
               <p className="mb-4"> Collection name: {collectionInfo.name}</p>
               <p className="mb-4"> Submission Date: {formatDate(collectionInfo.created)}</p>
               <p className="mb-4"> Number of files: {collectionInfo.documents.length}</p>

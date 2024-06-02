@@ -3,9 +3,8 @@ import HomePage from "./components/pages/HomePage";
 import LoginPage from "./components/pages/LoginPage";
 import RegisterPage from "./components/pages/RegisterPage";
 import DashboardPage from "./components/pages/DashboardPage";
-import CollectionPage from "./components/pages/CollectionPage";
 import SharedPage from "./components/pages/SharedPage";
-import AboutPage from "./components/pages/About";
+import AboutPage from "./components/pages/AboutPage";
 
 import ErrorPage from "./components/pages/ErrorPage";
 import CMDRegister from "./components/pages/Cmd";
@@ -21,7 +20,6 @@ const App = () => {
                 <Route path="/register" element={<RegisterPage />} />
                 <Route path="/cmd" element={<CMDRegister />} />
                 <Route path="/dashboard" element={<DashboardPage />} />
-                <Route path="/dashboard/collection" element={<CollectionPage />} />
                 <Route path="/about" element={<AboutPage />} />
                 <Route path="/shared" element={<SharedPage />} />
                 <Route path="*" element={<ErrorPage />} />

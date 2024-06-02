@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { API_BASE_URL } from "../../constants/index.jsx";
 import { useNavigate } from 'react-router-dom';
-import SharingList from '../layout/SharingList.jsx';
+import SharingList from './SharingList.jsx';
 
-import { RiPencilFill, RiSettingsFill, RiShareFill, RiCheckboxCircleFill, RiDownloadFill } from 'react-icons/ri';
+import { RiPencilFill, RiShareFill, RiCheckboxCircleFill, RiDownloadFill } from 'react-icons/ri';
 
-const DocumentSetCard = ({ token, collection }) => {
+const CollectionCard = ({ collection }) => {
   const navigate = useNavigate();
   const [showSharingModal, setShowSharingModal] = useState(false);
+  const token = sessionStorage.getItem("access_token");
   const username = sessionStorage.getItem("username");
 
   const [cardName, setName] = useState(collection.name || 'Untitled');
@@ -15,7 +16,7 @@ const DocumentSetCard = ({ token, collection }) => {
   const [nameError, setNameError] = useState(null);
 
   const createdDate = collection.created ? collection.created : 'Unknown';
-  const link = collection.id ? 'https://localhost:3000/shared?col_uuid=' + collection.id : null;
+  const link = collection.id ? 'http://localhost:3000/shared?col_uuid=' + collection.id : null;
 
   // Format date to be more readable
   const formatDate = (dateString) => {
@@ -88,9 +89,6 @@ const DocumentSetCard = ({ token, collection }) => {
     }
   };
 
-  const handleManageCollection = () => {
-    navigate('/dashboard/collection', { state: { collection: collection } });
-  };
 
   const handleShareCollection = () => {
     setShowSharingModal(true);
@@ -125,27 +123,23 @@ const DocumentSetCard = ({ token, collection }) => {
             </h2>
             {nameError && <p className="text-base text-red-600">{nameError}</p>}
           </div>
-          <button onClick={handleManageCollection}>
-            <div className="flex gap-2 border-2 border-black rounded-lg ">
-              <p className="text-xl font-bold">Manage</p>
-              <RiSettingsFill /></div>
+          <button onClick={handleShareCollection}>
+            <div className="flex gap-2 border-2 border-black rounded-lg px-3 py-1">
+              <p className="text-xl font-bold">Share</p>
+              <RiShareFill className='text-2xl' /></div>
           </button>
         </div>
 
         <hr className="border-t border-purple-500 mb-4" />
 
-        <div className="flex gap-20 justify-between">
+        <div className="flex gap-20 justify-between items-center">
           <p className="text-xl">Submission Date: {formatDate(createdDate)}</p>
           <button onClick={handleDownloadCollection}>
-            <div className="flex gap-2 border-2 border-black rounded-lg ">
+            <div className="flex gap-2 border-2 border-black rounded-lg px-3 py-1">
               <p className="text-xl font-bold">Download</p>
               <RiDownloadFill className='text-2xl' /></div>
           </button>
-          <button onClick={handleShareCollection}>
-            <div className="flex gap-2 border-2 border-black rounded-lg ">
-              <p className="text-xl font-bold">Share</p>
-              <RiShareFill className='text-2xl' /></div>
-          </button>
+
         </div>
         {showSharingModal && <SharingList collection={collection} onClose={() => setShowSharingModal(false)} />}
       </div>
@@ -153,4 +147,4 @@ const DocumentSetCard = ({ token, collection }) => {
   );
 };
 
-export default DocumentSetCard;
+export default CollectionCard;
