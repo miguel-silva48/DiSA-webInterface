@@ -63,6 +63,7 @@ export default function CMDRegister() {
                 console.log("REGISTER RESPONSE:", data);
                 if (response.ok) {
                     sessionStorage.setItem("access_token", data.token)
+                    sessionStorage.setItem("username", data.username)
                     navigate("/dashboard");
                 }
             } catch (error) {

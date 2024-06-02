@@ -72,7 +72,7 @@ const LoginPage = () => {
     }
   };
 
-  let client_id = "";
+  let client_id = "9113170755799990166";
   let state;
 
   if (!document.cookie.includes("state")) {
