@@ -4,7 +4,7 @@ import LoginPage from "./components/pages/LoginPage";
 import RegisterPage from "./components/pages/RegisterPage";
 import DashboardPage from "./components/pages/DashboardPage";
 import SharedPage from "./components/pages/SharedPage";
-import AboutPage from "./components/pages/About";
+import AboutPage from "./components/pages/AboutPage";
 
 import ErrorPage from "./components/pages/ErrorPage";
 import CMDRegister from "./components/pages/Cmd";

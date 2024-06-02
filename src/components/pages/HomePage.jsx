@@ -56,12 +56,12 @@ const HomePage = () => {
                 Digitally Signed Archive is a platform that allows you to save and sign files with authenticity and integrity guarantee.
               </h2>
               <div className="flex justify-start">
-                <form className="w-3/5 border-2 border-gray-600 rounded-lg bg-white p-8 opacity-80">
-                  <h2 className="text-2xl font-bold text-gray-600 text-start mb-6">Want to submit files? <u className="text-purple-500 cursor-pointer" onClick={handleFindOutHowClick}>Find out how</u></h2>
+                <form className="w-3/5 border-2 rounded-lg bg-white p-8 opacity-80">
+                  <h2 className="text-2xl font-bold text-start mb-6">Want to submit files? <u className="text-purple-500 cursor-pointer" onClick={handleFindOutHowClick}>Find out how</u></h2>
                   <p className="text-gray-600 text-start mb-4"> To submit files, you need to use our client-side app. </p>
 
                   <hr className="border-t border-purple-500 mb-4" />
-                  <h2 className="text-2xl font-bold text-gray-600 text-start mb-2">Want to retrieve files?</h2>
+                  <h2 className="text-2xl font-bold text-start mb-2">Want to retrieve files?</h2>
                   <p className="text-gray-600 text-start mb-4"> To retrieve files, you need to have a link to the collection. If you have one, you can paste it below. </p>
                   <div className="flex items-center">
                     <input
